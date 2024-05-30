@@ -179,6 +179,72 @@ shap.summary_plot(shap_values, X_test, color="grayscale",
                                  'O-Integrity','O-Improvement','O-Self Directed','O-Initiative','O-Result',
                                  'O-Responsibility','O-Performance'])
 
+y_train=1-y_train
+y_test=1-y_test
+d = {
+    'target': 'PO',
+    'numerical':['P-Team-oriented','P-Infosharing','P-Supportive','P-Flexibility','P-Adaptability','P-Innovation',
+                  'P-Reputation','P-Professionalism','P-Client Convenience','P-Client Service','P-Honesty','P-Integrity',
+                  'P-Improvement','P-Self Directed','P-Initiative','P-Result','P-Responsibility','P-Performance',
+                  'O-Team-oriented','O-Infosharing','O-Supportive','O-Flexibility','O-Adaptability','O-Innovation',
+                  'O-Reputation','O-Professionalism','O-Client Convenience','O-Client Service','O-Honesty','O-Integrity',
+                  'O-Improvement','O-Self Directed','O-Initiative','O-Result','O-Responsibility','O-Performance']
+}
+version = 'Data_v1'
+alg_list_cf = ['gbm']
+#alg_list_dr = ['mlp', 'linear', 'svm', 'rf']
+alg_list_dr = ['mlp']
+
+outcome_dict = {'counterfactual_german':{'task': 'binary', 'X features': X_train.columns, 
+                                        'class': d['target'], 'alg_list': alg_list_cf,
+                                        'X_train':X_train, 'X_test':X_test,
+                                        'y_train':y_train, 'y_test':y_test}}
+import embed_mip as em
+import ce_helpers
+ce_helpers.train_models(outcome_dict, version)
+performance = ce_helpers.perf_trained_models(version, outcome_dict)
+performance
+alg='gbm'
+algorithms = {'counterfactual_german':alg}
+y_pred, y_pred_0, X_test_0, models = ce_helpers.load_model(algorithms, outcome_dict, 'counterfactual_german')  # it should be X_test instead of X
+X_test_0.head()
+clf = models['counterfactual_german']
+F_r = d['numerical']
+F_coh = {}
+algorithm = algorithms['counterfactual_german']
+constraints_embed = ['counterfactual_german']
+objectives_embed = {}
+model_master = em.model_selection(performance[performance['alg']==algorithm], constraints_embed, objectives_embed)
+model_master['lb'] = 0.5  # this can be changed but it is generally equal to 0.5
+model_master['ub'] = None
+model_master['SCM_counterfactuals'] = None
+model_master['features'] = [[col for col in X_train.columns]]
+model_master
+y_ix_1 = np.where(y_train==1)
+X1 = X_train.iloc[y_ix_1[0],:].copy().reset_index(drop=True, inplace=False)
+u_index = 1
+u = X_test_0.iloc[u_index,:]
+print(u)
+print('predicted label: %d' % (clf.predict([u])))
+sp = True
+mu = 0
+tr_region = False
+enlarge_tr = False
+num_counterfactuals = 2
+L = []
+# immutable features
+I = []
+# conditionally mutable features
+Pers_I = []
+P = X_train.columns
+F_b=[]
+F_int=[]
+data_pip=None
+CEs, CEs_, final_model = ce_helpers.opt(X_train, X1, u, F_r, F_b, F_int, F_coh, I, L, Pers_I, P, 
+                                        sp, mu, tr_region, enlarge_tr, num_counterfactuals, model_master, data_pip)
+df_1 = ce_helpers.visualise_changes(clf, d, F_coh=F_coh, method = 'CE-OCL', CEs=CEs, CEs_ = CEs_, only_changes=True)
+df_1
+
 clfPJT5_min5 = DecisionTreeClassifier(min_samples_leaf=5, max_depth=5, random_state=42)
 X_train = train_data[train_data.columns[:-1]]
 y_train = train_data[out]
