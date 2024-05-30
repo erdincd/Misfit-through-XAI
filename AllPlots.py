@@ -1,18 +1,8 @@
 import numpy as np
 import pandas as pd
-from sklearn.feature_selection import RFECV
-from sklearn.model_selection import cross_val_score, cross_val_predict, KFold
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.svm import SVC
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.neural_network import MLPClassifier
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.gaussian_process import GaussianProcessClassifier
-from xgboost import XGBClassifier
-import lime
-import lime.lime_tabular
 import shap
 from sklearn.metrics import f1_score
 import dtreeviz
@@ -40,20 +30,6 @@ data=data_inp.copy()
 data.insert(37, out, raw_data[out])
 data=data.dropna(axis=0, how='any', subset=None, inplace=False)
 
-"""
-selected_columns = [0, 2, 3, 5, 10, 12, 13, 15, 16, 17, 18, 19, 22, 24, 25, 30, 32, 33, 36]
-selected_columns = [0, 3, 12, 13, 15, 16, 17, 18, 19, 22, 24, 25, 30, 32, 33, 36]
-selected_columns = [0, 2, 3, 10, 13, 15, 17, 18, 22, 24, 25, 30, 33, 36]
-selected_columns = [0, 2, 3, 13, 15, 17, 18, 22, 24, 25, 33, 36]
-selected_columns = [5, 6, 12, 15, 18, 19, 22, 23, 24, 25, 27, 28, 29, 30, 31, 32, 33, 36]
-
-selected_columns = [15, 23, 19, 5, 17, 21, 34, 16, 12, 31, 32, 24, 18, 22, 20, 33, 3, 36]
-selected_columns = [15, 23, 19, 5, 17, 21, 34, 16, 12, 31, 36]
-selected_columns = [15, 23, 19, 17, 16, 12, 32, 24, 20, 3, 36]
-
-selected_columns = [5, 6, 9, 12, 15, 16, 17, 20, 23, 31, 32, 35, 36]
-data = data.iloc[:, selected_columns]
-"""
 predicted_data = data.copy()
 
 R2=[]
@@ -81,31 +57,11 @@ clfPJ9_min5 = DecisionTreeClassifier(min_samples_leaf=5, max_depth=9, random_sta
 clfPJ10_min5 = DecisionTreeClassifier(min_samples_leaf=5, max_depth=10, random_state=42)
 clfPJ_min5= DecisionTreeClassifier(min_samples_leaf=5, random_state=42)
 gbr= GradientBoostingClassifier(n_estimators=10000, max_depth=5, random_state=42)
-gpr= GaussianProcessClassifier(random_state=42)
-xgb= XGBClassifier(random_state=42)
 linr = LogisticRegression()
-annad= MLPClassifier(max_iter=5000,hidden_layer_sizes=1000, random_state=42)
-annlb= MLPClassifier(max_iter=5000,hidden_layer_sizes=1000,solver='lbfgs', random_state=42)
-svrlin= SVC(kernel='linear', random_state=42)
-svrpol= SVC(kernel='poly', random_state=42)
-svrrbf01= SVC(kernel='rbf',C=0.1, random_state=42)
-svrrbf1= SVC(kernel='rbf',C=1, random_state=42)
-svrrbf10= SVC(kernel='rbf',C=10, random_state=42)
-svrrbf100= SVC(kernel='rbf',C=100, random_state=42)
-knn1= KNeighborsClassifier(n_neighbors=1)
-knn3= KNeighborsClassifier(n_neighbors=3)
-knn5= KNeighborsClassifier(n_neighbors=5)
-knn7= KNeighborsClassifier(n_neighbors=7)
-rfr2= RandomForestClassifier(max_depth=2, random_state=42)
-rfr3= RandomForestClassifier(max_depth=3, random_state=42)
-rfr4= RandomForestClassifier(max_depth=4, random_state=42)
-rfr5= RandomForestClassifier(max_depth=5, random_state=42)
-rfr10= RandomForestClassifier(max_depth=10, random_state=42)
-rfr= RandomForestClassifier(random_state=42)
 
-MODELS.extend([clfPJ2, clfPJ3, clfPJ4, clfPJ5, clfPJ6, clfPJ7, clfPJ8, clfPJ9, clfPJ10, clfPJ, clfPJ2_min5, clfPJ3_min5, clfPJ4_min5, clfPJ5_min5, 
-                    clfPJ6_min5, clfPJ7_min5, clfPJ8_min5, clfPJ9_min5, clfPJ10_min5, clfPJ_min5, gbr, gpr, xgb, linr, annad, annlb, svrlin, svrpol, 
-                    svrrbf01, svrrbf1, svrrbf10, svrrbf100, knn1, knn3, knn5, knn7, rfr2, rfr3, rfr4, rfr5, rfr10, rfr])
+MODELS.extend([clfPJ2, clfPJ3, clfPJ4, clfPJ5, clfPJ6, clfPJ7, clfPJ8, clfPJ9, clfPJ10, clfPJ, clfPJ2_min5, 
+               clfPJ3_min5, clfPJ4_min5, clfPJ5_min5, clfPJ6_min5, clfPJ7_min5, clfPJ8_min5, clfPJ9_min5, 
+               clfPJ10_min5, clfPJ_min5, gbr, linr])
 
 test_data=data.iloc[[5, 9, 16, 20, 23, 24, 35, 42, 46, 47, 56, 59, 61, 68, 70, 72, 73, 78, 82, 85, 91, 98,
     110, 115, 122, 126, 130, 132, 134, 141, 143, 149, 158, 170, 171, 177, 182, 185, 190, 192,
@@ -194,31 +150,57 @@ tornado_plot(labels, pos, neg, title="Logistic Regression Model")
 import dtreeviz
 viz_model = dtreeviz.model(clfPJ4_min5,
                            X_train=X_train, y_train=y_train,
-                           feature_names=['P-Team-oriented','P-Infosharing','P-Supportive','P-Flexibility','P-Adaptability','P-Innovation','P-Reputation','P-Professionalism','P-Client Convenience','P-Client Service','P-Honesty','P-Integrity','P-Improvement','P-Self Directed','P-Initiative','P-Result','P-Responsibility','P-Performance','O-Team-oriented','O-Infosharing','O-Supportive','O-Flexibility','O-Adaptability','O-Innovation','O-Reputation','O-Professionalism','O-Client Convenience','O-Client Service','O-Honesty','O-Integrity','O-Improvement','O-Self Directed','O-Initiative','O-Result','O-Responsibility','O-Performance','Tenure'],
+                           feature_names=['P-Team-oriented','P-Infosharing','P-Supportive',
+                                          'P-Flexibility','P-Adaptability','P-Innovation','P-Reputation',
+                                          'P-Professionalism','P-Client Convenience','P-Client Service',
+                                          'P-Honesty','P-Integrity','P-Improvement','P-Self Directed',
+                                          'P-Initiative','P-Result','P-Responsibility','P-Performance',
+                                          'O-Team-oriented','O-Infosharing','O-Supportive',
+                                          'O-Flexibility','O-Adaptability','O-Innovation','O-Reputation',
+                                          'O-Professionalism','O-Client Convenience','O-Client Service',
+                                          'O-Honesty','O-Integrity','O-Improvement','O-Self Directed',
+                                          'O-Initiative','O-Result','O-Responsibility','O-Performance','Tenure'],
                            class_names=['FIT','MISFIT'])
 v = viz_model.view(label_fontsize=20, ticks_fontsize=12, title_fontsize=15)     # render as SVG into internal object 
 v.show()                 # pop up window
 
-explainer = shap.Explainer(gbr.predict, X_test, random_state=42)
+explainer = shap.Explainer(gbr.predict, X_test, seed=42)
 shap_values = explainer(X_test)
 shap.plots.waterfall(shap_values[41])
 
-shap.summary_plot(shap_values, X_test, color="grayscale", feature_names=['P-Team-oriented','P-Infosharing','P-Supportive','P-Flexibility','P-Adaptability','P-Innovation','P-Reputation','P-Professionalism','P-Client Convenience','P-Client Service','P-Honesty','P-Integrity','P-Improvement','P-Self Directed','P-Initiative','P-Result','P-Responsibility','P-Performance','O-Team-oriented','O-Infosharing','O-Supportive','O-Flexibility','O-Adaptability','O-Innovation','O-Reputation','O-Professionalism','O-Client Convenience','O-Client Service','O-Honesty','O-Integrity','O-Improvement','O-Self Directed','O-Initiative','O-Result','O-Responsibility','O-Performance'])
+shap.summary_plot(shap_values, X_test, color="grayscale", 
+                  feature_names=['P-Team-oriented','P-Infosharing','P-Supportive','P-Flexibility',
+                                 'P-Adaptability','P-Innovation','P-Reputation','P-Professionalism',
+                                 'P-Client Convenience','P-Client Service','P-Honesty','P-Integrity',
+                                 'P-Improvement','P-Self Directed','P-Initiative','P-Result',
+                                 'P-Responsibility','P-Performance','O-Team-oriented','O-Infosharing',
+                                 'O-Supportive','O-Flexibility','O-Adaptability','O-Innovation','O-Reputation',
+                                 'O-Professionalism','O-Client Convenience','O-Client Service','O-Honesty',
+                                 'O-Integrity','O-Improvement','O-Self Directed','O-Initiative','O-Result',
+                                 'O-Responsibility','O-Performance'])
 
-clfPJT5_min5 = DecisionTreeClassifier(min_samples_leaf=5, max_depth=5)
+clfPJT5_min5 = DecisionTreeClassifier(min_samples_leaf=5, max_depth=5, random_state=42)
 X_train = train_data[train_data.columns[:-1]]
 y_train = train_data[out]
 X_test = test_data[test_data.columns[:-1]]
 y_test = test_data[out]
 clfPJT5_min5.fit(X_train, y_train)
 clfPJT5_min5.predict(X_test.values)
-R2.append(f1_score(y_test,PRED[36],average='macro'))
+R2.append(f1_score(y_test,PRED[21],average='macro'))
 
 import dtreeviz
 viz_model = dtreeviz.model(clfPJT5_min5,
                            X_train=X_train, y_train=y_train,
-                           feature_names=['P-Team-oriented','P-Infosharing','P-Supportive','P-Flexibility','P-Adaptability','P-Innovation','P-Reputation','P-Professionalism','P-Client Convenience','P-Client Service','P-Honesty','P-Integrity','P-Improvement','P-Self Directed','P-Initiative','P-Result','P-Responsibility','P-Performance','O-Team-oriented','O-Infosharing','O-Supportive','O-Flexibility','O-Adaptability','O-Innovation','O-Reputation','O-Professionalism','O-Client Convenience','O-Client Service','O-Honesty','O-Integrity','O-Improvement','O-Self Directed','O-Initiative','O-Result','O-Responsibility','O-Performance','Tenure'],
+                           feature_names=['P-Team-oriented','P-Infosharing','P-Supportive',
+                                          'P-Flexibility','P-Adaptability','P-Innovation','P-Reputation',
+                                          'P-Professionalism','P-Client Convenience','P-Client Service',
+                                          'P-Honesty','P-Integrity','P-Improvement','P-Self Directed',
+                                          'P-Initiative','P-Result','P-Responsibility','P-Performance',
+                                          'O-Team-oriented','O-Infosharing','O-Supportive',
+                                          'O-Flexibility','O-Adaptability','O-Innovation','O-Reputation',
+                                          'O-Professionalism','O-Client Convenience','O-Client Service',
+                                          'O-Honesty','O-Integrity','O-Improvement','O-Self Directed',
+                                          'O-Initiative','O-Result','O-Responsibility','O-Performance','Tenure'],
                            class_names=['FIT','MISFIT'])
 v = viz_model.view(label_fontsize=20, ticks_fontsize=12, title_fontsize=15)     # render as SVG into internal object 
 v.show()                 # pop up window
-
