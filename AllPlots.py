@@ -164,7 +164,7 @@ viz_model = dtreeviz.model(clfPJ4_min5,
 v = viz_model.view(label_fontsize=20, ticks_fontsize=12, title_fontsize=15)     # render as SVG into internal object 
 v.show()                 # pop up window
 
-explainer = shap.Explainer(gbr.predict, X_test, seed=42)
+explainer = shap.Explainer(gbr.predict, X_test, seed=123456789)
 shap_values = explainer(X_test)
 shap.plots.waterfall(shap_values[41])
 
