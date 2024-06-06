@@ -39,7 +39,7 @@ For further information, please see the [Visual Studio Code download page](https
 
    Install the necessary Python packages by running the following command in your terminal:
 
-   ```
+   ```sh
    pip install numpy pandas scikit-learn shap dtreeviz matplotlib
    ```
 
@@ -80,24 +80,6 @@ To reproduce the plots, run the script `AllPlots.py`:
 python AllPlots.py
 ```
 
-## Contributing
-
-We welcome contributions! Please fork the repository and create a pull request with your changes.
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Acknowledgements
-
-We would like to thank everyone who contributed to this project. Special thanks to the Faculty of Economics and Business, University of Amsterdam.
-
----
-
-Kind regards,
-
-Erdinç Durak
-
----
-
-Feel free to adjust any sections as needed.
