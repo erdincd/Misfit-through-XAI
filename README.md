@@ -4,11 +4,39 @@ This repository contains the data and the code to reproduce all plots in the boo
 
 Please follow these steps to reproduce the plots:
 
-1. Download all the files in this repository to your PC.
-2. If you do not have an environment on your PC to run Python, download Visual Studio Code and the Python extension on your computer. For further information please see https://code.visualstudio.com/download. 
-3. Run "AllPlots.py".
+1. Download all the files in this repository to your PCs.
+2. If you do not have the tools to run Python on your PC, download Visual Studio Code and the Python extension. For further information please see https://code.visualstudio.com/download.
+3. Install these packages to the environment you are working on dtreeviz, matplotlib, numpy, pandas, scikit-learn, shap. You can install these packages by running the following command in your terminal:
+   pip install numpy pandas scikit-learn shap dtreeviz matplotlib
+   For further information please see https://packaging.python.org/en/latest/tutorials/installing-packages/.
+4. In your terminal, run the following code:
+python3.8 -m venv venv
 
+source venv/bin/activate
 
+# check python version
+python --version
+
+# check installed packages
+pip list
+
+# install DiCE
+pip install dice-ml
+
+# install requirements
+cd /Users/tabearober/Documents/Counterfactuals/CE-OCL
+pip install -r requirements.txt
+
+# install jupyter
+pip install jupyter
+
+# install Gurobi
+visit https://www.gurobi.com/products/gurobi-optimizer/
+
+# exit virtual env
+deactivate
+
+5. Run "AllPlots.py".
 
 Kind regards,
 Erdinç Durak
