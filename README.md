@@ -9,33 +9,17 @@ Please follow these steps to reproduce the plots:
 3. Install these packages to the environment you are working on dtreeviz, matplotlib, numpy, pandas, scikit-learn, shap. You can install these packages by running the following command in your terminal:
    pip install numpy pandas scikit-learn shap dtreeviz matplotlib
    For further information please see https://packaging.python.org/en/latest/tutorials/installing-packages/.
-4. In your terminal, run the following code:
-python3.8 -m venv venv
-
-source venv/bin/activate
-
-# check python version
-python --version
-
-# check installed packages
-pip list
-
-# install DiCE
-pip install dice-ml
-
-# install requirements
-cd /Users/tabearober/Documents/Counterfactuals/CE-OCL
-pip install -r requirements.txt
-
-# install jupyter
-pip install jupyter
-
-# install Gurobi
-visit https://www.gurobi.com/products/gurobi-optimizer/
-
-# exit virtual env
-deactivate
-
+4. In your terminal, run the following lines one by one:
+   python3.8 -m venv venv
+   source venv/bin/activate
+   python --version
+   pip list
+   pip install dice-ml
+   cd /Users/tabearober/Documents/Counterfactuals/CE-OCL
+   pip install -r requirements.txt
+   pip install jupyter
+   visit https://www.gurobi.com/products/gurobi-optimizer/
+   deactivate
 5. Run "AllPlots.py".
 
 Kind regards,
