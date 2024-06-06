@@ -2,20 +2,20 @@ This repository contains the data and code to reproduce all plots in the book ch
 
 If you have any questions about the data or the code, please contact me at [e.durak@uva.nl](mailto:e.durak@uva.nl).
 
-# Table of Contents
+## Table of Contents
 
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
 - [License](#license)
 
-# Introduction
+## Introduction
 
 This project aims to enhance our understanding of misfit using explainable AI techniques. It includes the necessary data and scripts to generate the plots presented in the book chapter.
 
-# Installation
+## Installation
 
-## Prerequisites
+### Prerequisites
 
 Ensure you have the following installed on your PC:
 
@@ -25,7 +25,7 @@ Ensure you have the following installed on your PC:
 
 For further information, please see the [Visual Studio Code download page](https://code.visualstudio.com/download).
 
-## Steps
+### Steps
 
 1. **Clone the Repository**
 
@@ -68,7 +68,7 @@ For further information, please see the [Visual Studio Code download page](https
    deactivate
    ```
 
-# Usage
+## Usage
 
 To reproduce the plots, run the script `AllPlots.py`:
 
@@ -76,6 +76,6 @@ To reproduce the plots, run the script `AllPlots.py`:
 python AllPlots.py
 ```
 
-# License
+## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
