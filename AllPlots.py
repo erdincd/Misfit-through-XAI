@@ -12,22 +12,8 @@ from sklearn import tree
 import random
 from sklearn.utils import check_random_state
 
-#Please set the number of input variables in your data below 
-n=37
-
 #Please set the number of additional variables in your data below
 t=1 
-
-#Please set the output variable name below as it is written in data
-out="PO"
-
-#Please set the person and environment names below
-label1='P'
-label2='O'
-
-#Please set the colors of Logistic Regression Model below
-color_pos='dimgrey'
-color_neg='lightgray'
 
 #Please set the class names
 class_names=['FIT','MISFIT']
@@ -38,10 +24,11 @@ np.random.seed(42)
 random_state=check_random_state(42)
 
 #Importing the data
-raw_data= pd.read_csv("Data.csv")
-data_inp=raw_data[raw_data.columns[0:n]]
-data=data_inp.copy()
-data.insert(n, out, raw_data[out])
+data= pd.read_csv("Data.csv")
+out=data.columns[-1]
+n=len(data.columns)-1
+label1=data.columns[0][0]
+label2=data.columns[n-t-1][0]
 data=data.dropna(axis=0, how='any', subset=None, inplace=False)
 
 #Please set the indices of the data points to be in the test data, or set "autosplit" 1 to make code set for you
@@ -99,6 +86,10 @@ for i in range(len(MODELS)):
   MODELS[i].fit(X_train, y_train)
   PRED.append(MODELS[i].predict(X_test))
   R2.append(f1_score(y_test,PRED[i],average='macro'))
+
+#Please set the colors of Logistic Regression Model below
+color_pos='dimgrey'
+color_neg='lightgray'
 
 #Plotting Logistic Regression Model results
 def tornado_plot(attributes, values1, values2, title):
