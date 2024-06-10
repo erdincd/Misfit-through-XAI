@@ -70,7 +70,34 @@ For further information, please see the [Visual Studio Code download page](https
 
 ## Usage
 
+### Reproduce the Results
+
 To reproduce the plots, run the script `AllPlots.py`:
+
+```sh
+python AllPlots.py
+```
+
+### Analyze Your Data
+
+To analyze your own data, please follow these steps:
+
+1. **Prepare Your Data**
+
+   Put your data (named `Data.csv`) into the same file with the `AllPlots.py` with the following format:
+   - The columns should be in the order of: firstly the characteristics of person (should be named as `P-_characteristics1_`, `P-_characteristics2_`, etc.), and then the characteristics of environment (should be named as `E-_characteristics1_`, `E-_characteristics2_`, etc., `E` can be changed to `J`, `O`, etc.). Be careful that the characteristics are in the same order. After the characteristics of person and environment, contextual variables can be added, and lastly the outcome should be added.
+   - Be sure that your data includes only numerical data (excluding column names).
+   - Be sure that the number of characteristics of person and environment are the same.
+   - Be sure that there is no missing data.
+   - Be sure that your outcome is a binary variable.
+
+2. **Update the Code**
+
+   Follow the comments on the script `AllPlots.py`, and make the necessary changes under the comments starting with "Please". Save the changes.
+
+3. **Run the Code**
+
+   Run the script `AllPlots.py`:
 
 ```sh
 python AllPlots.py
