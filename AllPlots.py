@@ -30,7 +30,6 @@ n=len(data.columns)-1
 label1=data.columns[0][0]
 label2=data.columns[n-t-1][0]
 data=data.dropna(axis=0, how='any', subset=None, inplace=False)
-
 X=data[data.columns[:-1-t]]
 y=data[out]
 
