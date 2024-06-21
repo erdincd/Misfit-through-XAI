@@ -31,25 +31,8 @@ label1=data.columns[0][0]
 label2=data.columns[n-t-1][0]
 data=data.dropna(axis=0, how='any', subset=None, inplace=False)
 
-#Please set the indices of the data points to be in the test data, or set "autosplit" 1 to make code set for you
-#Please set test_size if you select auto split
-autosplit=0
-test_size=0.2
-test_indices=[5, 9, 16, 20, 23, 24, 35, 42, 46, 47, 56, 59, 61, 68, 70, 72, 73, 78, 82, 85, 91, 98,
-              110, 115, 122, 126, 130, 132, 134, 141, 143, 149, 158, 170, 171, 177, 182, 185, 190, 192,
-              198, 202, 208, 213, 219, 220, 223, 230, 239, 240, 247]
-
-#Splitting the data into test and train data (without additional variables)
-if autosplit == 1:
-    from sklearn.model_selection import train_test_split
-    train_data, test_data = train_test_split(data, test_size=test_size, random_state=42)
-else:
-    test_data=data.iloc[test_indices]
-    train_data=data.drop(test_indices)
-X_train = train_data[train_data.columns[:-1-t]]
-y_train = train_data[out]
-X_test = test_data[test_data.columns[:-1-t]]
-y_test = test_data[out]
+X=data[data.columns[:-1-t]]
+y=data[out]
 
 #Defining the models to be built
 MODELS=[]
@@ -83,9 +66,9 @@ MODELS.extend([clfPJ2, clfPJ3, clfPJ4, clfPJ5, clfPJ6, clfPJ7, clfPJ8, clfPJ9, c
 R2=[]
 PRED=[]
 for i in range(len(MODELS)):
-  MODELS[i].fit(X_train, y_train)
-  PRED.append(MODELS[i].predict(X_test))
-  R2.append(f1_score(y_test,PRED[i],average='macro'))
+  MODELS[i].fit(X, y)
+  PRED.append(MODELS[i].predict(X))
+  R2.append(f1_score(y,PRED[i],average='macro'))
 
 #Please set the colors of Logistic Regression Model below
 color_pos='dimgrey'
@@ -126,25 +109,27 @@ if depth==-1:
 
 #Plotting Decision Tree Model results
 DTmodel=MODELS[depth-2+10*with_min5]
-viz_model = dtreeviz.model(DTmodel, X_train=X_train, y_train=y_train,
+viz_model = dtreeviz.model(DTmodel, X_train=X, y_train=y,
                            feature_names=[col for col in data.columns if col.startswith(label1+'-') or col.startswith(label2+'-')], 
                            class_names=class_names)
 v = viz_model.view(label_fontsize=20, ticks_fontsize=12, title_fontsize=15) 
 v.show()
 
-#Please set the index of the data point (in test data) you want to see its SHAP results
-ind=202
+#Please set the index of the data point you want to see its SHAP results
+ind=21
 
 #Plotting SHAP results
-explainer = shap.Explainer(gbr.predict, X_test, seed=123456789)
-shap_values = explainer(X_test)
-shap.plots.waterfall(shap_values[test_indices.index(ind)])
-shap.summary_plot(shap_values, X_test,
+explainer = shap.Explainer(gbr.predict, X, seed=42)
+shap_values = explainer(X)
+shap.plots.waterfall(shap_values[ind])
+shap.summary_plot(shap_values, X,
                   feature_names=[col for col in data.columns if col.startswith(label1+'-') or col.startswith(label2+'-')])
 
-#Computing Counterfactual Explanations
-y_train=1-y_train
-y_test=1-y_test
+#Please set the index of the data point you want to see its SHAP results
+ind_2=0
+
+#Computing Counterfactual Explanations (you can see the alternative solutions in df_1 variable)
+y=1-y
 d = {
     'target': out,
     'numerical':[col for col in data.columns if col.startswith(label1+'-') or col.startswith(label2+'-')]
@@ -152,10 +137,10 @@ d = {
 version = 'Data_v1'
 alg_list_cf = ['gbm']
 alg_list_dr = ['mlp']
-outcome_dict = {'counterfactual_german':{'task': 'binary', 'X features': X_train.columns, 
+outcome_dict = {'counterfactual_german':{'task': 'binary', 'X features': X.columns, 
                                         'class': d['target'], 'alg_list': alg_list_cf,
-                                        'X_train':X_train, 'X_test':X_test,
-                                        'y_train':y_train, 'y_test':y_test}}
+                                        'X_train':X, 'X_test':X,
+                                        'y_train':y, 'y_test':y}}
 import embed_mip as em
 import ce_helpers
 ce_helpers.train_models(outcome_dict, version)
@@ -175,11 +160,11 @@ model_master = em.model_selection(performance[performance['alg']==algorithm], co
 model_master['lb'] = 0.5
 model_master['ub'] = None
 model_master['SCM_counterfactuals'] = None
-model_master['features'] = [[col for col in X_train.columns]]
+model_master['features'] = [[col for col in X.columns]]
 model_master
-y_ix_1 = np.where(y_train==1)
-X1 = X_train.iloc[y_ix_1[0],:].copy().reset_index(drop=True, inplace=False)
-u_index = 1
+y_ix_1 = np.where(y==1)
+X1 = X.iloc[y_ix_1[0],:].copy().reset_index(drop=True, inplace=False)
+u_index = ind_2
 u = X_test_0.iloc[u_index,:]
 print(u)
 print('predicted label: %d' % (clf.predict([u])))
@@ -191,17 +176,17 @@ num_counterfactuals = 2
 L = []
 I = []
 Pers_I = []
-P = X_train.columns
+P = X.columns
 F_b=[]
 F_int=[]
 data_pip=None
-CEs, CEs_, final_model = ce_helpers.opt(X_train, X1, u, F_r, F_b, F_int, F_coh, I, L, Pers_I, P, 
+CEs, CEs_, final_model = ce_helpers.opt(X, X1, u, F_r, F_b, F_int, F_coh, I, L, Pers_I, P, 
                                         sp, mu, tr_region, enlarge_tr, num_counterfactuals, model_master, data_pip)
 df_1 = ce_helpers.visualise_changes(clf, d, F_coh=F_coh, method = 'CE-OCL', CEs=CEs, CEs_ = CEs_, only_changes=True)
 
 #Please set the depth level of decision tree you want to plot (set -1 for unlimited),
 #and the minimum number of samples per node (set -1 for unlimited)
-depth=5
+depth=4
 minspn=5
 
 #Fitting the Decision Tree model to the data with additional variables
@@ -213,16 +198,14 @@ elif minspn>0:
   clfAV = DecisionTreeClassifier(min_samples_leaf=minspn, random_state=42)
 else:
   clfAV = DecisionTreeClassifier(random_state=42)
-X_train = train_data[train_data.columns[:-1]]
-y_train = train_data[out]
-X_test = test_data[test_data.columns[:-1]]
-y_test = test_data[out]
-clfAV.fit(X_train, y_train)
-clfAV.predict(X_test.values)
-R2.append(f1_score(y_test,PRED[len(PRED)-1],average='macro'))
+X= data[data.columns[:-1]]
+y= data[out]
+clfAV.fit(X, y)
+clfAV.predict(X.values)
+R2.append(f1_score(y,PRED[len(PRED)-1],average='macro'))
 
 #Plotting Decision Tree model (with additional variables) results
-viz_model = dtreeviz.model(clfAV, X_train=X_train, y_train=y_train, class_names=class_names,
+viz_model = dtreeviz.model(clfAV, X_train=X, y_train=y, class_names=class_names,
                            feature_names=[col for col in data.columns if col!=out])
 v = viz_model.view(label_fontsize=20, ticks_fontsize=12, title_fontsize=15) 
 v.show()
