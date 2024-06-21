@@ -11,7 +11,9 @@ If you have any questions about the data or the code, please contact me at [e.du
 
 ## Introduction
 
-This project aims to enhance our understanding of misfit using explainable AI techniques. It includes the necessary data and scripts to generate the plots presented in the book chapter.
+This project aims to enhance our understanding of misfit using explainable AI techniques. It includes the necessary data and scripts to generate the plots presented in the book chapter. 
+
+You can follow this README file or [this notebook](https://colab.research.google.com/drive/15EdqUIpe-8kTYpuw4J06DpsPDv7eZGJl#scrollTo=VL-FNnfztn2_) to reproduce the plots or apply the models to your data.
 
 ## Installation
 
