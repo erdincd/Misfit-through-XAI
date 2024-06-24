@@ -27,7 +27,6 @@ random.seed(rn)
 np.random.seed(rn)
 random_state=check_random_state(rn)
 
-
 #Importing the data
 data= pd.read_csv("Data.csv")
 out=data.columns[-1]
