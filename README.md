@@ -43,10 +43,10 @@ To analyze your own data, please follow these steps:
 
    Put your data (named `Data.csv`) into the same file with the `AllPlots.py` with the following format:
    - The columns should be in the order of: firstly the characteristics of person (should be named as P-_characteristics1_, P-_characteristics2_, etc.), and then the characteristics of environment (should be named as E-_characteristics1_, E-_characteristics2_, etc., E can be changed to J, O, etc.). After the characteristics of person and environment, contextual variables can be added, and lastly the outcome should be added.
-  - Be sure that the number of characteristics of person and environment are the same and the characteristics are in the same order.
-  - Be sure that your data includes only numerical data.
-  - Be sure that there is no missing data.
-  - Be sure that your outcome is a binary variable.
+  - The number of characteristics of person and environment should be the same and the characteristics are in the same order.
+  - Your data should include only numerical data.
+  - Data should have no missing data.
+  - The outcome should include only 0 and 1 values.
 
 2. **Update the Code**
 
