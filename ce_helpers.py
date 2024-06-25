@@ -227,7 +227,7 @@ def opt(X, X1, u, F_r, F_b, F_int, F_coh, I, L, Pers_I, P, sp, mu, tr_region, en
         solution.append(value(MIP_final_model.x[i]))
     print(f'The optimal solution is: {solution}')
 
-    number_of_solutions = opt.get_model_attr('SolCount')
+    #number_of_solutions = opt.get_model_attr('SolCount')
     # print(f"########################Num of solutions###################### {number_of_solutions}")
     CEs = pd.DataFrame([u])
     for i in range(number_of_solutions):
