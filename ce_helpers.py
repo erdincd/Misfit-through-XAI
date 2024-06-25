@@ -231,17 +231,17 @@ def opt(X, X1, u, F_r, F_b, F_int, F_coh, I, L, Pers_I, P, sp, mu, tr_region, en
     #number_of_solutions = opt.get_model_attr('SolCount')
     # print(f"########################Num of solutions###################### {number_of_solutions}")
     CEs = pd.DataFrame([u])
-    for i in range(number_of_solutions):
-        opt.set_gurobi_param('SolutionNumber', i)
-        suboptimal_solutions = opt.get_model_attr('Xn')
+    #for i in range(number_of_solutions):
+    #    opt.set_gurobi_param('SolutionNumber', i)
+    #    suboptimal_solutions = opt.get_model_attr('Xn')
 
-        vars_name_x = [opt.get_var_attr(MIP_final_model.x[i], 'VarName') for i in X.columns]
-        vars_name_ix = [int(vars_name_x[i].replace('x', '')) for i in range(len(vars_name_x))]
-        # print(vars_name_ix)
-        vars_val_x = [suboptimal_solutions[i - 1] for i in vars_name_ix]
-        solution_i = {X.columns[i]: vars_val_x[i] for i in range(len(vars_val_x))}
-        solution_i = pd.DataFrame(solution_i, index=[0])
-        CEs = pd.concat([CEs, solution_i], ignore_index=True)
+    #    vars_name_x = [opt.get_var_attr(MIP_final_model.x[i], 'VarName') for i in X.columns]
+    #    vars_name_ix = [int(vars_name_x[i].replace('x', '')) for i in range(len(vars_name_x))]
+    #    # print(vars_name_ix)
+    #    vars_val_x = [suboptimal_solutions[i - 1] for i in vars_name_ix]
+    #    solution_i = {X.columns[i]: vars_val_x[i] for i in range(len(vars_val_x))}
+    #    solution_i = pd.DataFrame(solution_i, index=[0])
+    #    CEs = pd.concat([CEs, solution_i], ignore_index=True)
 
     CEs.reset_index(drop=True, inplace=True)
 
