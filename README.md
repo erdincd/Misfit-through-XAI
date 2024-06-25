@@ -18,7 +18,6 @@ This project aims to enhance our understanding of misfit using explainable AI te
 Ensure you have the following installed on your PC:
 
 - Python (version 3.11)
-- Visual Studio Code and 3.11 version of Python extension (these are optional, but strongly recommended for better development experience, including code editing, debugging, and extensions support). For further information, please see the [Visual Studio Code download page](https://code.visualstudio.com/download).
 
 ### Steps
 
