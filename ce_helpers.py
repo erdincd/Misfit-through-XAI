@@ -212,6 +212,7 @@ def opt(X, X1, u, F_r, F_b, F_int, F_coh, I, L, Pers_I, P, sp, mu, tr_region, en
     MIP_final_model = em.optimization_MIP(conceptual_model, conceptual_model.x, model_master, X1, tr=tr_region,
                                           enlarge_tr=enlarge_tr)
     opt = SolverFactory('cbc')
+    number_of_solutions = 1
     #opt = SolverFactory('gurobi_persistent')
     #opt.set_instance(MIP_final_model)
     #opt.set_gurobi_param('PoolSolutions', num_counterfactuals + 100)
