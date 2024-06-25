@@ -211,11 +211,12 @@ def opt(X, X1, u, F_r, F_b, F_int, F_coh, I, L, Pers_I, P, sp, mu, tr_region, en
                                                             Pers_I, P, obj=obj, sparsity=sp, tr=tr_region)
     MIP_final_model = em.optimization_MIP(conceptual_model, conceptual_model.x, model_master, X1, tr=tr_region,
                                           enlarge_tr=enlarge_tr)
-    opt = SolverFactory('gurobi_persistent')
-    opt.set_instance(MIP_final_model)
-    opt.set_gurobi_param('PoolSolutions', num_counterfactuals + 100)
+    opt = SolverFactory('cbc')
+    #opt = SolverFactory('gurobi_persistent')
+    #opt.set_instance(MIP_final_model)
+    #opt.set_gurobi_param('PoolSolutions', num_counterfactuals + 100)
     # opt.set_gurobi_param('PoolSolutions', num_counterfactuals)
-    opt.set_gurobi_param('PoolSearchMode', 1)
+    #opt.set_gurobi_param('PoolSearchMode', 1)
 
     # opt.options['Solfiles'] = 'solution'+version
     results = opt.solve(MIP_final_model, load_solutions=True, tee=False)
