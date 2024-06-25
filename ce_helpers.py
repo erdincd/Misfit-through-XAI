@@ -655,7 +655,7 @@ def CounterfactualExplanation(X, u, F_r, F_b, F_int, F_coh, mu, sparsity_RHS, I,
     def obj_function_l1norm(model):
         return sum(model.t[i] for i in F) + mu * sum(model.z[i] for i in F)
 
-    assert obj in ['l2', 'l1MAD'], "Invalid objective function; please choose between l2, l1, l1MAD"
+    assert obj in ['l2', 'l1', 'l1MAD'], "Invalid objective function; please choose between l2, l1, l1MAD"
     if obj == 'l2':
         model.OBJ = Objective(rule=obj_function_l2norm, sense=minimize)
     elif obj == 'l1MAD':
