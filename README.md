@@ -9,7 +9,7 @@ This repository contains the data and code to reproduce all plots in the book ch
 
 ## Introduction
 
-This project aims to enhance our understanding of misfit using explainable AI techniques. It includes the necessary data and code scripts to generate the plots presented in the book chapter. You can follow this README file to reproduce the plots or apply the models to your data on your PC, or you can follow [this notebook](https://colab.research.google.com/drive/15EdqUIpe-8kTYpuw4J06DpsPDv7eZGJl#scrollTo=VL-FNnfztn2_) to generate the plots on the browser. If you are not familiar with Python, we strogly recommend you work on the notebook.
+This project aims to enhance our understanding of misfit using explainable AI techniques. It includes the necessary data and code scripts to generate the plots presented in the book chapter. You can follow this README file to reproduce the plots or apply the models to your data on your PC, or you can follow [this notebook](https://colab.research.google.com/drive/15EdqUIpe-8kTYpuw4J06DpsPDv7eZGJl#scrollTo=VL-FNnfztn2_) to generate the plots on the browser. If you are not familiar with Python, we strongly recommend you work on the notebook.
 
 ## Installation
 
