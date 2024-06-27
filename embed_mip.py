@@ -188,12 +188,12 @@ def optimization_MIP(model,
             model.add_component('scm_' + outcome, Constraint(expr=model.y[outcome] == SCM + model.x[outcome]))
         else:
             if not pd.isna(ub):
-                if task == 'binary':
-                    ub = logistic_x(proba=ub)
+                #if task == 'binary':
+                    #ub = logistic_x(proba=ub)
                 model.add_component('ub_' + outcome, Constraint(expr=model.y[outcome] <= ub))
             if not pd.isna(lb):
-                if task == 'binary':
-                    lb = logistic_x(proba=lb)
+                #if task == 'binary':
+                    #lb = logistic_x(proba=lb)
                 model.add_component('lb_' + outcome, Constraint(expr=model.y[outcome] >= lb))
 
     def constraints_mlp(model, data, outcome, task, weights, lb=None, ub=None, weight_objective=0, SCM=None, features=None, M_l=-1e5, M_u=1e5):
