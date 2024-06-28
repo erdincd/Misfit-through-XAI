@@ -50,7 +50,7 @@ To analyze your own data, please follow these steps:
 
 2. **Update the Code**
 
-   Follow the comments on the script `AllPlots.py`, and make the necessary changes under the comments starting with "Please". Save the changes.
+   Follow the comments on the script `AllPlots.py`, and make the necessary changes under the comments starting with "Please".
 
 3. **Run the Code**
 
