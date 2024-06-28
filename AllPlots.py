@@ -130,7 +130,7 @@ shap.summary_plot(shap_values, X,
 
 #Please set the index of the data point you want to see its CE results and the number of CEs
 ind_2=21
-num_counterfactuals=5
+num_counterfactuals=2
 
 #Computing Counterfactual Explanations (you can see the alternative solutions in df_1 variable)
 y_pred=np.ones(len(y))
@@ -138,7 +138,6 @@ y_temp=1-y
 d={'target': out, 'numerical':[col for col in data.columns if col.startswith(label1+'-') or col.startswith(label2+'-')]}
 version='Data_v1'
 alg_list_cf=['gbm']
-alg_list_dr=['mlp']
 alg='gbm'
 algorithms={'counterfactual_german':alg}
 while y_pred[ind_2]==1:
